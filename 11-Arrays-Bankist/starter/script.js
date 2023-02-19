@@ -62,3 +62,4 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////// SUMMARY LINE//////////////////////
+1.
