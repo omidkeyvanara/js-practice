@@ -60,7 +60,7 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
-git commit -m "movements row added in js"
+// git commit -m "movements row added in js"
 /////////////////////// SUMMARY LINE//////////////////////
 const displayMovements = function (movements) {
   containerMovements.innerHTML= ``
