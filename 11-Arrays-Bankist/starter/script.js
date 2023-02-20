@@ -60,10 +60,9 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
-// git commit -m "movements row added in js"
 /////////////////////// SUMMARY LINE//////////////////////
 const displayMovements = function (movements) {
-  containerMovements.innerHTML= ``
+  containerMovements.innerHTML = ``;
   movements.forEach(function (mov, i) {
     const type = mov > 0 ? `deposit` : `withdrawal`;
     const html = ` 
@@ -75,3 +74,13 @@ const displayMovements = function (movements) {
   });
 };
 displayMovements(account1.movements);
+
+const createUsername = function (user) {
+  const username = user
+    .toLocaleLowerCase()
+    .split(` `)
+    .map(name => name[0])
+    .join(``);
+  return username;
+};
+console.log(createUsername('Sarah Smith'));
