@@ -75,12 +75,23 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-const createUsername = function (user) {
-  const username = user
-    .toLocaleLowerCase()
-    .split(` `)
-    .map(name => name[0])
-    .join(``);
-  return username;
+/////////////////////// SUMMARY LINE//////////////////////
+const createUsername = function (accounts) {
+  accounts.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLocaleLowerCase()
+      .split(` `)
+      .map(name => name[0])
+      .join(``);
+  });
 };
-console.log(createUsername('Sarah Smith'));
+//    نکته اصلی استفاده از فور ایچ بود و اینکه از یوزر را برابر اونر قرار داد.
+createUsername(accounts);
+console.log(account1);
+
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance}`;
+};
+
+calcDisplayBalance(account1.movements);
