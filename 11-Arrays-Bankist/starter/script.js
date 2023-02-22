@@ -75,7 +75,7 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
-/////////////////////// SUMMARY LINE//////////////////////
+/////////////////////// CREATING USERNAME//////////////////////
 const createUsername = function (accounts) {
   accounts.forEach(function (acc) {
     acc.username = acc.owner
@@ -85,13 +85,34 @@ const createUsername = function (accounts) {
       .join(``);
   });
 };
-//    نکته اصلی استفاده از فور ایچ بود و اینکه از یوزر را برابر اونر قرار داد.
 createUsername(accounts);
-console.log(account1);
+//    نکته اصلی استفاده از فور ایچ بود و اینکه از یوزر را برابر اونر قرار داد.
+
+/////////////////////// BALANCE//////////////////////
 
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}`;
+  labelBalance.textContent = `${balance}€`;
 };
-
 calcDisplayBalance(account1.movements);
+
+/////////////////////// CALCULATING SUMMARY//////////////////////
+const calcDisplaySummary = function (movements) {
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${income}€`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${out}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(int => int > 1)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
