@@ -73,7 +73,6 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML(`beforeend`, html);
   });
 };
-displayMovements(account1.movements);
 
 /////////////////////// CREATING USERNAME//////////////////////
 const createUsername = function (accounts) {
@@ -94,25 +93,47 @@ const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${balance}€`;
 };
-calcDisplayBalance(account1.movements);
 
 /////////////////////// CALCULATING SUMMARY//////////////////////
-const calcDisplaySummary = function (movements) {
-  const income = movements
+const calcDisplaySummary = function (acc) {
+  const income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${income}€`;
 
-  const out = movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${out}€`;
 
-  const interest = movements
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
-    .filter(int => int > 1)
+    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter((int, i, arr) => int > 1)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
-calcDisplaySummary(account1.movements);
+
+/////////////////////// IMPLEMENTING LOGIN//////////////////////
+
+let currentAccount;
+
+btnLogin.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    x =>
+      x.username === inputLoginUsername.value &&
+      x.pin === Number(inputLoginPin.value)
+  );
+
+  labelWelcome.textContent = `welcome back, ${
+    currentAccount.owner.split(` `)[0]
+  }`;
+  containerApp.style.opacity = 100;
+  // updateUI(currentAccount.movements);
+  displayMovements(currentAccount.movements);
+  calcDisplayBalance(currentAccount.movements);
+  calcDisplaySummary(currentAccount);
+  inputLoginUsername.value = inputLoginPin.value = ` `;
+});
+11-Arrays-Bankist
