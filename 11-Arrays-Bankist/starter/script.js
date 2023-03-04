@@ -3,6 +3,7 @@
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // BANKIST APP
+// git push -f origin git merge main --allow-unrelated-histories
 
 // Data
 const account1 = {
@@ -61,9 +62,13 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////// SUMMARY LINE//////////////////////
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = ``;
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  // ماو متغیری جامعتر از موومنتز است چون حالت سورت شده آن را هم در خود دارد. پس برای حلقه فورایچ از آن استفاده میکنیم تا حالت نمایش ما هم از حالت سورت شده ی آن استفاده کند.
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? `deposit` : `withdrawal`;
     const html = ` 
     <div class="movements__row">
@@ -86,13 +91,20 @@ const createUsername = function (accounts) {
 };
 createUsername(accounts);
 //    نکته اصلی استفاده از فور ایچ بود و اینکه از یوزر را برابر اونر قرار داد.
+/////////////////////// UPDATE UI//////////////////////
 
+const updateUI = function (acc) {
+  displayMovements(acc.movements);
+  calcDisplayBalance(acc);
+  calcDisplaySummary(acc);
+};
 /////////////////////// BALANCE//////////////////////
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}€`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance}€`;
 };
+// برای هراکانت مقدار بالانس خودش را تعیین میکنیم و در داخل آبجکت خودش قرار میدهیم. از فورایچ استفاده نمیکنیم چون برای هر اکانت قرار است این مقدار علاوه بر داخل آبجکت در صفحه هم نمایش داده شود پس باید کورنت اکانت در آن قرار گیرد که در هر لوگ این اکانت مورد نظر ما در آن قرار میگیرد.
 
 /////////////////////// CALCULATING SUMMARY//////////////////////
 const calcDisplaySummary = function (acc) {
@@ -115,25 +127,72 @@ const calcDisplaySummary = function (acc) {
 };
 
 /////////////////////// IMPLEMENTING LOGIN//////////////////////
-
 let currentAccount;
 
 btnLogin.addEventListener(`click`, function (e) {
   e.preventDefault();
-  currentAccount = accounts.find(
-    x =>
-      x.username === inputLoginUsername.value &&
-      x.pin === Number(inputLoginPin.value)
-  );
+  currentAccount = accounts.find(x => x.username === inputLoginUsername.value);
+  if (currentAccount.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent = `welcome back, ${
+      currentAccount.owner.split(` `)[0]
+    }`;
+    containerApp.style.opacity = 100;
 
-  labelWelcome.textContent = `welcome back, ${
-    currentAccount.owner.split(` `)[0]
-  }`;
-  containerApp.style.opacity = 100;
-  // updateUI(currentAccount.movements);
-  displayMovements(currentAccount.movements);
-  calcDisplayBalance(currentAccount.movements);
-  calcDisplaySummary(currentAccount);
-  inputLoginUsername.value = inputLoginPin.value = ` `;
+    inputLoginUsername.value = inputLoginPin.value = ``;
+    updateUI(currentAccount);
+  }
 });
-11-Arrays-Bankist
+
+/////////////////////// TRANSFERING//////////////////////
+
+btnTransfer.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  const receiver = accounts.find(x => x.username === inputTransferTo.value);
+  const amount = Number(inputTransferAmount.value);
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiver !== currentAccount
+  ) {
+    receiver.movements.push(amount);
+    currentAccount.movements.push(-amount);
+    inputTransferTo.value = inputTransferAmount.value = ``;
+    updateUI(currentAccount);
+  }
+});
+/////////////////////// LOAN//////////////////////
+btnLoan.addEventListener(`click`, function (r) {
+  r.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(x => x >= amount * 0.1)) {
+    currentAccount.movements.push(amount);
+    inputLoanAmount.value = ``;
+    updateUI(currentAccount);
+  }
+});
+
+/////////////////////// SORTING//////////////////////
+let sorted = false;
+
+btnSort.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+  // به این دلیل از متغییر سورتید به عنوان معادلی از فالس استفاده میکند تا بتواند در آخرین خط تابع از عکس  آن استفاده کند و طبق منطق خشابی در ابتدا سورتید هر حالتی که باشد ما عکس آن را اجرا میکنیم با هرکلیک عکس آن اجرا میشود که در تابع دیسپلی موومنت تاثیر میگذارد و سورت را فعال یا غیر فعال میکند.
+});
+
+/////////////////////// CLOSING ACCOUNT//////////////////////
+btnClose.addEventListener(`click`, function (r) {
+  r.preventDefault();
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === Number(currentAccount.pin)
+  ) {
+    const fade = accounts.findIndex(
+      x => x.username === currentAccount.username
+    );
+    accounts.splice(fade, 1);
+    containerApp.style.opacity = 0;
+    inputClosePin.value = inputCloseUsername.value = ``;
+  }
+});
