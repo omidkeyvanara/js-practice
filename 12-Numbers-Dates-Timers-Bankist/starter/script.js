@@ -97,6 +97,13 @@ const formatMovementDate = function (date, locale) {
   }
 };
 // در این تابع یک دیت براساس زمان حال تعریف میکنیم و آن را از دیتی که در آبجکت اکانت قرار دارد کم میکنیم. تابع به کدام از ریترن‌ها برسد و قابل اجرا باشد پیشروی بیشتری نخواهد داشت پس وجود تعداد زیاد آنها مشکلی ایجاد نمیکند.
+
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: `currency`,
+    currency: currency,
+  }).format(value);
+};
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -106,7 +113,7 @@ const displayMovements = function (acc, sort = false) {
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
-
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDate(date, acc.locale);
     // موومنت دیت را هم داخل حلقه فورایچ قرار میدهد
@@ -117,7 +124,11 @@ const displayMovements = function (acc, sort = false) {
     } ${type}</div>
     <div class="movements__date">${displayDate}</div>
 
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${formatCur(
+          mov,
+          acc.locale,
+          acc.currency
+        )}</div>
       </div>
     `;
 
@@ -127,19 +138,27 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  labelBalance.textContent = `${formatCur(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `${formatCur(incomes, acc.locale, acc.currency)}`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${formatCur(
+    Math.abs(out),
+    acc.locale,
+    acc.currency
+  )}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -149,7 +168,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${formatCur(interest, acc.locale, acc.currency)}`;
 };
 
 const createUsernames = function (accs) {
