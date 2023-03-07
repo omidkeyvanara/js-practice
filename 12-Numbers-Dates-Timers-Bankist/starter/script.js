@@ -199,11 +199,28 @@ const updateUI = function (acc) {
 
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
+// شبیه به کورنت اکانت آن را بصورت گلوبال هم تعریف میکنیم چون قرار است برای هر اکانت نقشی متفاوت بازی کند، دقیقا شبیه به کورنت اکانت
 
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+const startLogoutTimer = function () {
+  let time = 120;
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${min}:${sec}`;
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = ` log in to get started
+      `;
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+  // برای اینکه کل تابع بعد از یک ثانیه اجرا نشود اول کال بک فانکشن یعنی تیک را اجرا میکند و بعد اینتروال را فعال میکند
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -226,7 +243,6 @@ btnLogin.addEventListener('click', function (e) {
       day: `numeric`,
       month: `numeric`,
       year: `numeric`,
-      // weekday: `long`,
     };
     labelDate.textContent = new Intl.DateTimeFormat(
       currentAccount.locale,
@@ -238,6 +254,12 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+
+    // log out timer
+    if (timer) {
+      clearInterval(timer);
+    }
+    timer = startLogoutTimer();
 
     // Update UI
     updateUI(currentAccount);
@@ -267,6 +289,9 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc.movementsDates.push(new Date().toISOString());
     // Update UI
     updateUI(currentAccount);
+
+    clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
@@ -286,6 +311,9 @@ btnLoan.addEventListener('click', function (e) {
       // Update UI
       updateUI(currentAccount);
     }, 3000);
+
+    clearInterval(timer);
+    timer = startLogoutTimer();
   }
   inputLoanAmount.value = '';
 });
