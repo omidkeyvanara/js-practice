@@ -62,13 +62,12 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////// SUMMARY LINE//////////////////////
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (movements) {
   containerMovements.innerHTML = ``;
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
 
   // ماو متغیری جامعتر از موومنتز است چون حالت سورت شده آن را هم در خود دارد. پس برای حلقه فورایچ از آن استفاده میکنیم تا حالت نمایش ما هم از حالت سورت شده ی آن استفاده کند.
 
-  movs.forEach(function (mov, i) {
+  movements.forEach(function (mov, i) {
     const type = mov > 0 ? `deposit` : `withdrawal`;
     const html = ` 
     <div class="movements__row">
@@ -172,14 +171,38 @@ btnLoan.addEventListener(`click`, function (r) {
 });
 
 /////////////////////// SORTING//////////////////////
-let sorted = false;
+// let sorted = false;
+let counter = 1;
+const f1 = function (movements) {
+  return movements.slice().sort((a, b) => a - b);
+};
+
+const f2 = function (movements) {
+  return movements.slice().sort((a, b) => b - a);
+};
+
+const handler = function (movements) {
+  if (counter === 1) {
+    movements = f1(movements);
+    counter = 2;
+  } else if (counter === 2) {
+    movements = f2(movements);
+    counter = 3;
+  } else {
+    movements = currentAccount.movements;
+    counter = 1;
+  }
+  displayMovements(movements);
+};
 
 btnSort.addEventListener(`click`, function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
-  sorted = !sorted;
-  // به این دلیل از متغییر سورتید به عنوان معادلی از فالس استفاده میکند تا بتواند در آخرین خط تابع از عکس  آن استفاده کند و طبق منطق خشابی در ابتدا سورتید هر حالتی که باشد ما عکس آن را اجرا میکنیم با هرکلیک عکس آن اجرا میشود که در تابع دیسپلی موومنت تاثیر میگذارد و سورت را فعال یا غیر فعال میکند.
+  handler(currentAccount.movements);
 });
+// displayMovements(currentAccount.movements, !sorted);
+// sorted = !sorted;
+// به این دلیل از متغییر سورتید به عنوان معادلی از فالس استفاده میکند تا بتواند در آخرین خط تابع از عکس  آن استفاده کند و طبق منطق خشابی در ابتدا سورتید هر حالتی که باشد ما عکس آن را اجرا میکنیم با هرکلیک عکس آن اجرا میشود که در تابع دیسپلی موومنت تاثیر میگذارد و سورت را فعال یا غیر فعال میکند.
+// });
 
 /////////////////////// CLOSING ACCOUNT//////////////////////
 btnClose.addEventListener(`click`, function (r) {
