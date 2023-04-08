@@ -30,19 +30,9 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-
 // SELECTING DOCUMENT
 
 const header = document.querySelector(`.header`);
-
-const allButtons = document.getElementsByTagName(`button`);
-console.log(allButtons);
-
-const allSection = document.querySelectorAll(`.section`);
-console.log(allSection);
-
-const btnClass = document.getElementsByClassName(`btn`);
-console.log(btnClass);
 
 // CREATING AND INSERTING
 
@@ -52,7 +42,7 @@ const message = document.createElement(`div`);
 message.classList.add(`cookie-message`);
 message.innerHTML = `test for creating DOM element: <button class="btn btn--close-cookie"> Got it! <button> `;
 
-header.prepend(message);
+header.append(message);
 
 // DELETE ELEMENT
 document
@@ -60,3 +50,15 @@ document
   .addEventListener(`click`, function () {
     message.remove();
   });
+
+// ADDING STYLE
+
+message.style.backgroundColor = `#37383d`;
+message.style.width = `120%`;
+
+console.log(message.style.width);
+
+console.log(getComputedStyle(message).height);
+
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height, 10) + 40 + `px`;
