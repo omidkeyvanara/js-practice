@@ -65,8 +65,6 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const displayMovements = function (movements) {
   containerMovements.innerHTML = ``;
 
-  // ماو متغیری جامعتر از موومنتز است چون حالت سورت شده آن را هم در خود دارد. پس برای حلقه فورایچ از آن استفاده میکنیم تا حالت نمایش ما هم از حالت سورت شده ی آن استفاده کند.
-
   movements.forEach(function (mov, i) {
     const type = mov > 0 ? `deposit` : `withdrawal`;
     const html = ` 
@@ -88,7 +86,6 @@ const createUsername = function (accounts) {
       .join(``);
   });
 };
-createUsername(accounts);
 //    نکته اصلی استفاده از فور ایچ بود و اینکه از یوزر را برابر اونر قرار داد.
 /////////////////////// UPDATE UI//////////////////////
 
