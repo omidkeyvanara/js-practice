@@ -216,3 +216,5 @@ btnClose.addEventListener(`click`, function (r) {
     inputClosePin.value = inputCloseUsername.value = ``;
   }
 });
+
+
