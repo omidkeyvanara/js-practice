@@ -40,9 +40,9 @@ const header = document.querySelector(`.header`);
 
 const message = document.createElement(`div`);
 message.classList.add(`cookie-message`);
-message.innerHTML = `test for creating DOM element: <button class="btn btn--close-cookie"> Got it! <button> `;
+message.innerHTML = `test for creating DOM element: <button class="btn btn--close-cookie">Got it!<button> `;
 
-header.append(message);
+header.after(message);
 
 // DELETE ELEMENT
 document
@@ -61,4 +61,13 @@ console.log(message.style.width);
 console.log(getComputedStyle(message).height);
 
 message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 40 + `px`;
+  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + `px`;
+
+document.documentElement.style.setProperty(`--color-primary`, `red`);
+
+// ATTRIBUTES
+
+const logo = document.querySelector(`.nav__logo`);
+
+logo.setAttribute(`alt`, `bank`);
+console.log(logo.getAttribute(`src`));
