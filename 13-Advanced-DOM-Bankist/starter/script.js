@@ -72,5 +72,20 @@ const logo = document.querySelector(`.nav__logo`);
 logo.setAttribute(`alt`, `bank`);
 console.log(logo.getAttribute(`src`));
 
-test;
-satisfies;
+const btnScrollTo = document.querySelector(`.btn--scroll-to`);
+const section1 = document.querySelector(`#section--1`);
+
+btnScrollTo.addEventListener(`click`, function (e) {
+  const s1coords = section1.getBoundingClientRect();
+
+  // window.scrollTo(s1coords.left, s1coords.top);
+  // این حالت از نظر محاسباتی دچار خطا میشود چون اطلاعاتی که دریافت میکند نسبت به ویوپورت سنجیده میشود پس فقط در حالتی کاملا صحیح عمل میکند که هیچ صفحه هیچ اسکرولی نداشته باشد
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: `smooth`,
+  // });
+  // برای رفع این خطا مقدار اسکرول را هم به مقادیر اولیه اضافه میکنیم تا از جمع این دو مقدار فاصله واقعی سکشن مشخص شود
+
+  section1.scrollIntoView({ behavior: `smooth` });
+});
