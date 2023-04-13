@@ -89,3 +89,15 @@ btnScrollTo.addEventListener(`click`, function (e) {
 
   section1.scrollIntoView({ behavior: `smooth` });
 });
+
+const h1 = document.querySelector(`h1`);
+const al = function (e) {
+  alert(`dari yad migiria nagholaye`);
+};
+
+h1.addEventListener(`mouseenter`, al);
+
+const time = function () {
+  h1.removeEventListener(`mouseenter`, al);
+};
+setTimeout(time, 3000);
