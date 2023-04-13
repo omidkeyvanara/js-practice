@@ -71,3 +71,6 @@ const logo = document.querySelector(`.nav__logo`);
 
 logo.setAttribute(`alt`, `bank`);
 console.log(logo.getAttribute(`src`));
+
+test;
+satisfies;
