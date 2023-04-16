@@ -72,14 +72,12 @@ const logo = document.querySelector(`.nav__logo`);
 logo.setAttribute(`alt`, `bank`);
 console.log(logo.getAttribute(`src`));
 
-
 // SMOOTH SCROLLING
 
 const btnScrollTo = document.querySelector(`.btn--scroll-to`);
 const section1 = document.querySelector(`#section--1`);
 
 btnScrollTo.addEventListener(`click`, function (e) {
-
   // const s1coords = section1.getBoundingClientRect();
   // window.scrollTo(s1coords.left, s1coords.top);
   // این حالت از نظر محاسباتی دچار خطا میشود چون اطلاعاتی که دریافت میکند نسبت به ویوپورت سنجیده میشود پس فقط در حالتی کاملا صحیح عمل میکند که هیچ صفحه هیچ اسکرولی نداشته باشد
@@ -104,3 +102,28 @@ const time = function () {
   h1.removeEventListener(`mouseenter`, al);
 };
 setTimeout(time, 3000);
+
+// BUBBLING PHASE
+
+const randomInt = function (min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+const randomColor = () =>
+  `rgb(${randomInt(0, 256)},${randomInt(0, 256)}, ${randomInt(0, 256)})`;
+
+document.querySelector(`h1`).addEventListener(`click`, function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log(`1`);
+  // e.stopPropagation();
+});
+
+document.querySelector(`.header`).addEventListener(
+  `click`,
+  function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log(`2`);
+  },
+  // true
+);
+
+//
