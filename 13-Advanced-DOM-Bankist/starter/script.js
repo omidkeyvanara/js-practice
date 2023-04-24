@@ -61,6 +61,14 @@ document.querySelector(`.nav__links`).addEventListener(`click`, function (e) {
   }
 });
 
+// TABBED COMPONENT
+
+const tabs = document.querySelectorAll(`.operations__tab`);
+const tabsContainer = document.querySelector(`.operations__tab-container`);
+const tabsContent = document.querySelectorAll(`.operations__content`);
+
+
+
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
 //     e.preventDefault();
