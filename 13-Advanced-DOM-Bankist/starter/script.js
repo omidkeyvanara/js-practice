@@ -67,8 +67,15 @@ const tabs = document.querySelectorAll(`.operations__tab`);
 const tabsContainer = document.querySelector(`.operations__tab-container`);
 const tabsContent = document.querySelectorAll(`.operations__content`);
 
-
-
+tabsContainer.addEventListener(`click`, function (e) {
+  const clicked = e.target.closest(`.operations__tab`);
+  console.log(clicked);
+  if (!clicked) return;
+  // گارد کلاز برای از بین بردن تعدادی از حالتهای تابع ما استفاده میشود. وقتی در داخل کانتینر کلیک شود ولی داخل تب های مورد نظر ما نباشد با خطای نول مواجه میشویم. به کمک گارد کلاز ما از احتمال وقوع این خطا جلوگیری میکنیم.
+  tabs.forEach(t=>t.classList.remove(`operations__tab--active`))
+  clicked.classList.add(`operations__tab--active`);
+  
+});
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
 //     e.preventDefault();
