@@ -10,6 +10,10 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const header = document.querySelector(`.header`);
 const btnScrollTo = document.querySelector(`.btn--scroll-to`);
 const section1 = document.querySelector(`#section--1`);
+const tabs = document.querySelectorAll(`.operations__tab`);
+const tabsContainer = document.querySelector(`.operations__tab-container`);
+const tabsContent = document.querySelectorAll(`.operations__content`);
+const nav = document.querySelector(`.nav`);
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -62,20 +66,26 @@ document.querySelector(`.nav__links`).addEventListener(`click`, function (e) {
 });
 
 // TABBED COMPONENT
-
-const tabs = document.querySelectorAll(`.operations__tab`);
-const tabsContainer = document.querySelector(`.operations__tab-container`);
-const tabsContent = document.querySelectorAll(`.operations__content`);
-
 tabsContainer.addEventListener(`click`, function (e) {
   const clicked = e.target.closest(`.operations__tab`);
-  console.log(clicked);
   if (!clicked) return;
   // گارد کلاز برای از بین بردن تعدادی از حالتهای تابع ما استفاده میشود. وقتی در داخل کانتینر کلیک شود ولی داخل تب های مورد نظر ما نباشد با خطای نول مواجه میشویم. به کمک گارد کلاز ما از احتمال وقوع این خطا جلوگیری میکنیم.
-  tabs.forEach(t=>t.classList.remove(`operations__tab--active`))
+
+  // REMOVE ACTIVE CLASSES
+  tabs.forEach(t => t.classList.remove(`operations__tab--active`));
+  tabsContent.forEach(c => c.classList.remove(`operations__content--active`));
+
+  // ACTIVATE TAB
   clicked.classList.add(`operations__tab--active`);
-  
+
+  // ACTIVE CONTENT AREA
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add(`operations__content--active`);
 });
+
+// MENU FADE ANIMATION
+
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
 //     e.preventDefault();
