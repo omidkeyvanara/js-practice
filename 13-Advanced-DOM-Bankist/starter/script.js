@@ -85,6 +85,17 @@ tabsContainer.addEventListener(`click`, function (e) {
 });
 
 // MENU FADE ANIMATION
+nav.addEventListener(`mouseover`, function (r) {
+  if (r.target.classList.contains(`nav__link`)) {
+    const link = r.target;
+    const siblings = link.closest(`.nav`).querySelectorAll(`.nav__link`);
+    const logo = link.closest(`.nav`).querySelector(`.img`);
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = 0.5;
+    });
+    logo.style.opacity = 0.5;
+  }
+});
 
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
