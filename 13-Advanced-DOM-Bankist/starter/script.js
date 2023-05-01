@@ -85,17 +85,56 @@ tabsContainer.addEventListener(`click`, function (e) {
 });
 
 // MENU FADE ANIMATION
-nav.addEventListener(`mouseover`, function (r) {
+// nav.addEventListener(`mouseover`, function (r) {
+//   if (r.target.classList.contains(`nav__link`)) {
+//     const link = r.target;
+//     const siblings = link.closest(`.nav`).querySelectorAll(`.nav__link`);
+//     const logo = link.closest(`.nav`).querySelector(`img`);
+//     siblings.forEach(el => {
+//       if (el !== link) el.style.opacity = 0.5;
+//     });
+//     logo.style.opacity = 0.5;
+//   }
+// });
+
+// //method 1 for fade back
+// nav.addEventListener(`mouseout`, function (r) {
+//   if (r.target.classList.contains(`nav__link`)) {
+//     const link = r.target;
+//     const siblings = link.closest(`.nav`).querySelectorAll(`.nav__link`);
+//     const logo = link.closest(`.nav`).querySelector(`img`);
+//     siblings.forEach(el => {
+//       if (el !== link) el.style.opacity = 1;
+//     });
+//     logo.style.opacity = 1;
+//   }
+// });
+
+//method 2 for fade back
+const handler = function (r) {
   if (r.target.classList.contains(`nav__link`)) {
     const link = r.target;
     const siblings = link.closest(`.nav`).querySelectorAll(`.nav__link`);
-    const logo = link.closest(`.nav`).querySelector(`.img`);
+    const logo = link.closest(`.nav`).querySelector(`img`);
     siblings.forEach(el => {
-      if (el !== link) el.style.opacity = 0.5;
+      if (el !== link) el.style.opacity = this;
     });
-    logo.style.opacity = 0.5;
+    logo.style.opacity = this;
   }
-});
+};
+
+// nav.addEventListener(`mouseover`, function (r) {
+//   handler(r, 0.5);
+// });
+// nav.addEventListener(`mouseout`, function (r) {
+//   handler(r, 1);
+// });
+
+//method 3 for fade back
+
+// در این حالت دیس همان آرگومنتی است که داخل بایند داده میشود.
+nav.addEventListener(`mouseover`, handler.bind(0.5));
+nav.addEventListener(`mouseout`, handler.bind(1));
 
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
