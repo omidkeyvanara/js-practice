@@ -172,6 +172,7 @@ const headerObs = new IntersectionObserver(callback, {
 });
 headerObs.observe(header);
 
+
 // REVEAL SECTIONS
 const allSections = document.querySelectorAll(`.section`);
 const revealSections = function (entris, observer) {
