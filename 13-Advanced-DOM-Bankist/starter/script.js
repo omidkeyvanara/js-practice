@@ -177,8 +177,10 @@ const allSections = document.querySelectorAll(`.section`);
 const revealSections = function (entris, observer) {
   const [entry] = entris;
   if (!entry.isIntersecting) return;
+  // این ریترن به صورت یک گاردکلاز عمل میکند
   entry.target.classList.remove(`section--hidden`);
   observer.unobserve(entry.target);
+  // از آن‌آبزرو به این دلیل استفاده میکند تا بعد از یک بار اجرا از اجرای دوباره آن جلوگیری کند. کاربردی ندارد
 };
 
 const sectionObs = new IntersectionObserver(revealSections, {
@@ -190,6 +192,28 @@ allSections.forEach(function (section) {
   sectionObs.observe(section);
   section.classList.add(`section--hidden`);
 });
+
+// LAZY LOADING IMAGES
+const imgTarget = document.querySelectorAll(`img[data-src]`);
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener(`load`, function () {
+    entry.target.classList.remove(`lazy-img`);
+  });
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  // تریشلد برار 0 یعنی وقتی حتی یک پیکسل در ویوپورت آمد تابع اجرا میشود
+});
+
+imgTarget.forEach(img => imgObserver.observe(img));
+
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
 //     e.preventDefault();
