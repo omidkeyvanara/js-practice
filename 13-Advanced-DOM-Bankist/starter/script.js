@@ -172,7 +172,6 @@ const headerObs = new IntersectionObserver(callback, {
 });
 headerObs.observe(header);
 
-
 // REVEAL SECTIONS
 const allSections = document.querySelectorAll(`.section`);
 const revealSections = function (entris, observer) {
@@ -191,7 +190,7 @@ const sectionObs = new IntersectionObserver(revealSections, {
 
 allSections.forEach(function (section) {
   sectionObs.observe(section);
-  section.classList.add(`section--hidden`);
+  // section.classList.add(`section--hidden`);
 });
 
 // LAZY LOADING IMAGES
@@ -215,6 +214,61 @@ const imgObserver = new IntersectionObserver(loadImg, {
 
 imgTarget.forEach(img => imgObserver.observe(img));
 
+// SLIDER COMPONENT
+
+const slides = document.querySelectorAll(`.slide`);
+const btnLeft = document.querySelector(`.slider__btn--left`);
+const btnRight = document.querySelector(`.slider__btn--right`);
+// slider.style.transform = `scale(0.4)`;
+// slider.style.overflow = `visible`;
+// const slider = document.querySelector(`.slider`);
+
+// slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+// بجای استفاده از این حلقه میتوان از تابع زیر استفاده کرد
+//  0% 100% 200% 300%
+
+let curSlide = 0;
+const maxSlide = slides.length - 1;
+
+const goToSlide = function (slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+  );
+};
+goToSlide(0);
+//  -100% 0% 100% 200%
+// next slide
+const nextSlide = function () {
+  if (curSlide === maxSlide) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
+  goToSlide(curSlide);
+};
+const prevSlide = function () {
+  if (curSlide === 0) {
+    curSlide = maxSlide;
+  } else {
+    curSlide--;
+  }
+  goToSlide(curSlide);
+};
+
+btnRight.addEventListener(`click`, nextSlide);
+btnLeft.addEventListener(`click`, prevSlide);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // document.querySelectorAll(`.nav__link`).forEach(function (el) {
 //   el.addEventListener(`click`, function (e) {
 //     e.preventDefault();
