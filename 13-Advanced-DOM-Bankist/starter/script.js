@@ -211,52 +211,96 @@ const imgObserver = new IntersectionObserver(loadImg, {
   threshold: 0,
   // تریشلد برار 0 یعنی وقتی حتی یک پیکسل در ویوپورت آمد تابع اجرا میشود
 });
-
 imgTarget.forEach(img => imgObserver.observe(img));
 
 // SLIDER COMPONENT
+const slider = function () {
+  const slides = document.querySelectorAll(`.slide`);
+  const btnLeft = document.querySelector(`.slider__btn--left`);
+  const btnRight = document.querySelector(`.slider__btn--right`);
+  const dotContainer = document.querySelector(`.dots`);
+  let curSlide = 0;
+  const maxSlide = slides.length - 1;
 
-const slides = document.querySelectorAll(`.slide`);
-const btnLeft = document.querySelector(`.slider__btn--left`);
-const btnRight = document.querySelector(`.slider__btn--right`);
-// slider.style.transform = `scale(0.4)`;
-// slider.style.overflow = `visible`;
-// const slider = document.querySelector(`.slider`);
+  // slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+  // بجای استفاده از این حلقه میتوان از تابع زیر استفاده کرد تابع گوتواسلاید با مقدار 0
+  //  0% 100% 200% 300%
 
-// slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
-// بجای استفاده از این حلقه میتوان از تابع زیر استفاده کرد
-//  0% 100% 200% 300%
+  // CREATE DOT FOR EACH SLIDE
+  const creatDots = function () {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentHTML(
+        `beforeend`,
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
 
-let curSlide = 0;
-const maxSlide = slides.length - 1;
+  // ACTIVE DOT INDICATOR
+  // شبیه به اکتیو تب اولین کاری که انجام میدهیم پاک کردن کلاس مورد نظر از همه ی اجزا است
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll(`.dots__dot`)
+      .forEach(dot => dot.classList.remove(`dots__dot--active`));
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add(`dots__dot--active`);
+  };
 
-const goToSlide = function (slide) {
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
-  );
+  // MOVING THE SLIDES
+  const goToSlide = function (slide) {
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+      //  -100% 0% 100% 200%
+    );
+  };
+  const init = function () {
+    creatDots();
+    goToSlide(0);
+    activateDot(0);
+  };
+  init();
+  // NEXT SLIDE
+  const nextSlide = function () {
+    if (curSlide === maxSlide) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+  // PREVIOUS SLIDE
+  const prevSlide = function () {
+    if (curSlide === 0) {
+      curSlide = maxSlide;
+    } else {
+      curSlide--;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+  btnRight.addEventListener(`click`, nextSlide);
+  btnLeft.addEventListener(`click`, prevSlide);
+
+  // KEYBOARD FOR MOVING THE SLIDES
+  document.addEventListener(`keydown`, function (e) {
+    if (e.key === `ArrowLeft`) prevSlide();
+    else if (e.key === `ArrowRight`) nextSlide();
+  });
+
+  // CLICKING THE DOTS FOR MOVING THE SLIDES
+  dotContainer.addEventListener(`click`, function (e) {
+    if (e.target.classList.contains(`dots__dot`)) {
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      activateDot(slide);
+
+      // در دو روش قبلی مجبور بودیم بصورت خطی رفتار کنیم. فقط یک اسلاید میتوانستیم عقب یا جلو برویم. ولی در این روش بخاطر استفاده از دیتاست مخصوص هر اسلاید میتوانیم مثلا از عکس اول به آخری برویم
+    }
+  });
 };
-goToSlide(0);
-//  -100% 0% 100% 200%
-// next slide
-const nextSlide = function () {
-  if (curSlide === maxSlide) {
-    curSlide = 0;
-  } else {
-    curSlide++;
-  }
-  goToSlide(curSlide);
-};
-const prevSlide = function () {
-  if (curSlide === 0) {
-    curSlide = maxSlide;
-  } else {
-    curSlide--;
-  }
-  goToSlide(curSlide);
-};
-
-btnRight.addEventListener(`click`, nextSlide);
-btnLeft.addEventListener(`click`, prevSlide);
+slider();
 //
 //
 //
