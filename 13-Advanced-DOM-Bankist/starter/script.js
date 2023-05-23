@@ -15,6 +15,8 @@ const tabsContainer = document.querySelector(`.operations__tab-container`);
 const tabsContent = document.querySelectorAll(`.operations__content`);
 const nav = document.querySelector(`.nav`);
 const navHeight = nav.getBoundingClientRect().height;
+const allSections = document.querySelectorAll(`.section`);
+const imgTarget = document.querySelectorAll(`img[data-src]`);
 
 const openModal = function () {
   modal.classList.remove('hidden');
@@ -50,13 +52,10 @@ btnScrollTo.addEventListener(`click`, function (e) {
   //   behavior: `smooth`,
   // });
   // برای رفع این خطا مقدار اسکرول را هم به مقادیر اولیه اضافه میکنیم تا از جمع این دو مقدار فاصله واقعی سکشن مشخص شود
-
   section1.scrollIntoView({ behavior: `smooth` });
 });
 
-// PAGE NAVIGATION
-
-//using event delegation
+// PAGE NAVIGATION (using event delegation)
 
 document.querySelector(`.nav__links`).addEventListener(`click`, function (e) {
   e.preventDefault();
@@ -111,7 +110,7 @@ tabsContainer.addEventListener(`click`, function (e) {
 //   }
 // });
 
-//method 2 for fade back
+// SECONDE METHODE FOR MENU FADE ANIMATION
 const handler = function (r) {
   if (r.target.classList.contains(`nav__link`)) {
     const link = r.target;
@@ -158,8 +157,8 @@ nav.addEventListener(`mouseout`, handler.bind(1));
 // observer.observe(section1);
 
 // INTERSECTION OBSERVER API
-const callback = function (enteris) {
-  const [entry] = enteris;
+const callback = function (entris) {
+  const [entry] = entris;
   if (!entry.isIntersecting) nav.classList.add(`sticky`);
   else {
     nav.classList.remove(`sticky`);
@@ -173,7 +172,6 @@ const headerObs = new IntersectionObserver(callback, {
 headerObs.observe(header);
 
 // REVEAL SECTIONS
-const allSections = document.querySelectorAll(`.section`);
 const revealSections = function (entris, observer) {
   const [entry] = entris;
   if (!entry.isIntersecting) return;
@@ -190,12 +188,9 @@ const sectionObs = new IntersectionObserver(revealSections, {
 
 allSections.forEach(function (section) {
   sectionObs.observe(section);
-  // section.classList.add(`section--hidden`);
 });
 
 // LAZY LOADING IMAGES
-const imgTarget = document.querySelectorAll(`img[data-src]`);
-
 const loadImg = function (entries, observer) {
   const [entry] = entries;
   if (!entry.isIntersecting) return;
@@ -394,5 +389,3 @@ slider();
 //   }
 //   // true
 // );
-
-// //
