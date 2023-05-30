@@ -54,3 +54,49 @@ class PersonCl {
 const jessica = new PersonCl(`jessica`, 1999);
 
 jessica.calcAge();
+
+const account = {
+  owner: `jonas`,
+  movements: [100, 200, 200, 450, 600],
+
+  get latest() {
+    return this.movements.slice(-1).pop();
+  },
+};
+console.log(account.latest);
+
+class Circle {
+  constructor(radius) {
+    this.radius = radius;
+  }
+
+  get area() {
+    return Math.PI * this.radius ** 2;
+  }
+}
+
+const myCircle = new Circle(5);
+console.log(myCircle.area);
+
+const account2 = {
+  owner: `jonas`,
+  movements: [100, 200, 200, 450, 600],
+
+  set latest(mov) {
+    this.movements.push(mov);
+  },
+};
+
+account2.latest = 50;
+console.log(account2);
+
+const PersonProto = {
+  calcAge() {
+    console.log(2023 - this.birthYear);
+  },
+};
+
+const jade = Object.create(PersonProto);
+jade.birthYear = 1966;
+
+jade.calcAge();
