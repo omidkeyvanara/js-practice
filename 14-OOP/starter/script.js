@@ -23,22 +23,6 @@ Array.prototype.uniqe = function () {
 };
 console.log(arr.uniqe());
 
-const Car = function (make, speed) {
-  this.make = make;
-  this.speed = speed;
-};
-
-const BMW = new Car(`BMW`, 120);
-const Mercedes = new Car(`Mercedes`, 95);
-
-Car.prototype.acc = function () {
-  return (this.speed += 10);
-};
-
-console.log(BMW, Mercedes);
-console.log(BMW.acc());
-console.log(BMW.acc());
-
 // 2-ES6 CLASSES
 
 class PersonCl {
@@ -100,3 +84,39 @@ const jade = Object.create(PersonProto);
 jade.birthYear = 1966;
 
 jade.calcAge();
+
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
+};
+
+const BMW = new Car(`BMW`, 120);
+const Mercedes = new Car(`Mercedes`, 95);
+
+Car.prototype.acc = function () {
+  return (this.speed += 10);
+};
+
+console.log(BMW, Mercedes);
+console.log(BMW.acc());
+
+class Car2 {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+  acce() {
+    return (this.speed += 10);
+  }
+  get USspeed1() {
+    return console.log(`in the US it would be around ${this.speed / 1.6} mi/h`);
+  }
+  set USspeed(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+const ford = new Car2(`Ford`, 120);
+ford.acce();
+ford.USspeed1;
+ford.USspeed = 50;
+console.log(ford);
