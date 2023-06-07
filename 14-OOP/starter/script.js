@@ -1,19 +1,18 @@
 'use strict';
 
 // 1- FUNCTION CONSTRUCTOR
-const Person = function (firstName, birthYear) {
+const Person1 = function (firstName, birthYear) {
   this.firstName = firstName;
   this.birthYear = birthYear;
 };
 
-const jonas = new Person(`jonas`, 1991);
-console.log(jonas);
-
-Person.prototype.calcAge = function () {
+Person1.prototype.calcAge = function () {
   console.log(2023 - this.birthYear);
 };
 
-console.log(Person.prototype);
+const jonas = new Person1(`jonas`, 1991);
+console.log(jonas);
+console.log(Person1.prototype);
 
 jonas.calcAge();
 
@@ -120,3 +119,27 @@ ford.acce();
 ford.USspeed1;
 ford.USspeed = 50;
 console.log(ford);
+
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+Person.prototype.calcAge = function () {
+  console.log(2023 - this.birthYear);
+};
+
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear);
+  // چون پرسن شبیه به یک تابع عملی میکند اگر از آن بدون متد کال استفاده میکردیم با خطا مواجه میشدیم زیرا برای توابع دیس به صورت آن‌دیفایند تعریف میشود.
+  this.course = course;
+};
+
+Student.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}.`);
+};
+
+const rain = new Student(`rain`, 1997, `art`);
+rain.introduce();
+
+const chain = Object.create
