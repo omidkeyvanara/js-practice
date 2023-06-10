@@ -25,8 +25,8 @@ console.log(arr.uniqe());
 // 2-ES6 CLASSES
 
 class PersonCl {
-  constructor(firstName, birthYear) {
-    this.firstName = firstName;
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
     this.birthYear = birthYear;
   }
   calcAge() {
@@ -34,6 +34,20 @@ class PersonCl {
   }
 }
 
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+  }
+}
+
+const fitra = new StudentCl(`fitra`, 2001, `art`);
+fitra.introduce();
+fitra.calcAge();
 const jessica = new PersonCl(`jessica`, 1999);
 
 jessica.calcAge();
@@ -77,7 +91,23 @@ const PersonProto = {
   calcAge() {
     console.log(2023 - this.birthYear);
   },
+
+  pr(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  },
 };
+
+const StudentProto = Object.create(PersonProto);
+StudentProto.pr = function (fullName, birthYear, course) {
+  PersonProto.pr.call(this, fullName, birthYear);
+  this.course = course;
+};
+
+const jadi = Object.create(StudentProto);
+
+jadi.pr(`jadi`, 2021, `civil eng`);
+jadi.calcAge();
 
 const jade = Object.create(PersonProto);
 jade.birthYear = 1966;
@@ -87,6 +117,10 @@ jade.calcAge();
 const Car = function (make, speed) {
   this.make = make;
   this.speed = speed;
+};
+
+Car.prototype.brake = function () {
+  this.speed -= 5;
 };
 
 const BMW = new Car(`BMW`, 120);
@@ -135,11 +169,41 @@ const Student = function (firstName, birthYear, course) {
   this.course = course;
 };
 
+// LINKING prototype
+
+Student.prototype = Object.create(Person.prototype);
+// چون طبق این خط یک آبجکت خالی جدید ساخته میشود پس باید قبل از هر پروتوتایپ خاصی این کد نوشته شود.
+
 Student.prototype.introduce = function () {
   console.log(`My name is ${this.firstName} and I study ${this.course}.`);
 };
 
 const rain = new Student(`rain`, 1997, `art`);
 rain.introduce();
+rain.calcAge();
 
-const chain = Object.create
+const EV = function (make, speed, charge) {
+  Car.call(this, make, speed);
+  this.charge = charge;
+};
+
+EV.prototype = Object.create(Car.prototype);
+
+EV.prototype.chargeBattery = function (chargeTo) {
+  this.charge = chargeTo;
+};
+
+EV.prototype.accelerate = function () {
+  this.speed += 20;
+  this.charge--;
+  console.log(
+    `${this.make} going at ${this.speed} km/h, with a charge of ${this.charge}%`
+  );
+};
+
+const tesla = new EV(`Tesla`, 120, 23);
+tesla.chargeBattery(90);
+
+tesla.accelerate();
+tesla.chargeBattery();
+tesla.brake();
