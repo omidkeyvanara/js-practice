@@ -7,12 +7,12 @@ const Person1 = function (firstName, birthYear) {
 };
 
 Person1.prototype.calcAge = function () {
-  console.log(2023 - this.birthYear);
+  // console.log(2023 - this.birthYear);
 };
 
 const jonas = new Person1(`jonas`, 1991);
-console.log(jonas);
-console.log(Person1.prototype);
+// console.log(jonas);
+// console.log(Person1.prototype);
 
 jonas.calcAge();
 
@@ -20,7 +20,7 @@ const arr = [1, 2, 3, 3, 4, 7, 3];
 Array.prototype.uniqe = function () {
   return [...new Set(this)];
 };
-console.log(arr.uniqe());
+// console.log(arr.uniqe());
 
 // 2-ES6 CLASSES
 
@@ -30,7 +30,7 @@ class PersonCl {
     this.birthYear = birthYear;
   }
   calcAge() {
-    console.log(2023 - this.birthYear);
+    // console.log(2023 - this.birthYear);
   }
 }
 
@@ -41,7 +41,7 @@ class StudentCl extends PersonCl {
   }
 
   introduce() {
-    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+    // console.log(`My name is ${this.fullName} and I study ${this.course}`);
   }
 }
 
@@ -60,7 +60,7 @@ const account = {
     return this.movements.slice(-1).pop();
   },
 };
-console.log(account.latest);
+// console.log(account.latest);
 
 class Circle {
   constructor(radius) {
@@ -73,7 +73,7 @@ class Circle {
 }
 
 const myCircle = new Circle(5);
-console.log(myCircle.area);
+// console.log(myCircle.area);
 
 const account2 = {
   owner: `jonas`,
@@ -85,11 +85,11 @@ const account2 = {
 };
 
 account2.latest = 50;
-console.log(account2);
+// console.log(account2);
 
 const PersonProto = {
   calcAge() {
-    console.log(2023 - this.birthYear);
+    // console.log(2023 - this.birthYear);
   },
 
   pr(fullName, birthYear) {
@@ -130,8 +130,8 @@ Car.prototype.acc = function () {
   return (this.speed += 10);
 };
 
-console.log(BMW, Mercedes);
-console.log(BMW.acc());
+// console.log(BMW, Mercedes);
+// console.log(BMW.acc());
 
 class Car2 {
   constructor(make, speed) {
@@ -142,7 +142,7 @@ class Car2 {
     return (this.speed += 10);
   }
   get USspeed1() {
-    return console.log(`in the US it would be around ${this.speed / 1.6} mi/h`);
+    // return console.log(`in the US it would be around ${this.speed / 1.6} mi/h`);
   }
   set USspeed(speed) {
     this.speed = speed * 1.6;
@@ -152,7 +152,7 @@ const ford = new Car2(`Ford`, 120);
 ford.acce();
 ford.USspeed1;
 ford.USspeed = 50;
-console.log(ford);
+// console.log(ford);
 
 const Person = function (firstName, birthYear) {
   this.firstName = firstName;
@@ -160,7 +160,7 @@ const Person = function (firstName, birthYear) {
 };
 
 Person.prototype.calcAge = function () {
-  console.log(2023 - this.birthYear);
+  // console.log(2023 - this.birthYear);
 };
 
 const Student = function (firstName, birthYear, course) {
@@ -175,7 +175,7 @@ Student.prototype = Object.create(Person.prototype);
 // چون طبق این خط یک آبجکت خالی جدید ساخته میشود پس باید قبل از هر پروتوتایپ خاصی این کد نوشته شود.
 
 Student.prototype.introduce = function () {
-  console.log(`My name is ${this.firstName} and I study ${this.course}.`);
+  // console.log(`My name is ${this.firstName} and I study ${this.course}.`);
 };
 
 const rain = new Student(`rain`, 1997, `art`);
@@ -196,9 +196,9 @@ EV.prototype.chargeBattery = function (chargeTo) {
 EV.prototype.accelerate = function () {
   this.speed += 20;
   this.charge--;
-  console.log(
-    `${this.make} going at ${this.speed} km/h, with a charge of ${this.charge}%`
-  );
+  // console.log(
+  `${this.make} going at ${this.speed} km/h, with a charge of ${this.charge}%`;
+  // )
 };
 
 const tesla = new EV(`Tesla`, 120, 23);
@@ -207,3 +207,29 @@ tesla.chargeBattery(90);
 tesla.accelerate();
 tesla.chargeBattery();
 tesla.brake();
+
+// OTHER CLASSES
+
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.pin = pin;
+    this.movements = [];
+    this.locale = navigator.language;
+  }
+
+  deposit(val) {
+    this.movements.push(val);
+    return this;
+  }
+
+  withdraw(val) {
+    this.deposit(-val);
+    return this;
+  }
+}
+
+const acc1 = new Account(`hani`, `US`, 1111);
+console.log(acc1);
+acc1.deposit(300).withdraw(1190);
