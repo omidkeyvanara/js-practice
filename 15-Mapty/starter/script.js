@@ -20,7 +20,7 @@ navigator.geolocation.getCurrentPosition(
     console.log(`https://www.google.com/maps/@${latitude},${longitude}`);
 
     const coords = [latitude, longitude];
-     map = L.map('map').setView(coords, 13);
+    map = L.map('map').setView(coords, 13);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution:
@@ -28,7 +28,19 @@ navigator.geolocation.getCurrentPosition(
     }).addTo(map);
 
     // HANDLING CLICKS ON MAP
-    //  In the Leaflet library, map.on() is a method that allows you to attach an event listener to a specific map instance.نمیتوان به یک نقشه ایونت لیسنر اضافه کرد، از 
+    //  In the Leaflet library, map.on() is a method that allows you to attach an event listener to a specific map instance.نمیتوان به یک نقشه ایونت لیسنر اضافه کرد، از
+
+    class App{
+
+      _getPosition(){}
+
+      _loadMap(){}
+
+      _showForm(){}
+
+      _toggleElevationField(){}
+    }
+
     map.on(`click`, function (mapE) {
       console.log(mapE);
       mapEvent = mapE;
@@ -66,4 +78,9 @@ form.addEventListener(`submit`, function (e) {
     )
     .setPopupContent(`workout`)
     .openPopup();
+});
+
+inputType.addEventListener(`change`, function () {
+  inputElevation.closest(`.form__row`).classList.toggle(`form__row--hidden`);
+  inputCadence.closest(`.form__row`).classList.toggle(`form__row--hidden`);
 });
